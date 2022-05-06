@@ -1,0 +1,117 @@
+import re    
+regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'  
+
+pa =''' 1.password lenth should in minimum 6 and maximum 16
+       2.Must have minimum one special character,one digit,one uppercase,one lowercase character
+  ------------------------------------------------------------------------------------------------     
+  '''
+
+def checkuser(username):   
+    if(re.search(regex,username)):   
+        print("Valid username")  
+        print("now can set your password")
+        print(pa)
+        return True
+
+    else:   
+        print("Invalid Email") 
+        print('Sorry! cant access please enter correct username')
+        return False
+        
+def login():
+    username = input('please enter username :')
+    
+    password = input('please enter password :')
+    inf = username+" "+password
+    f = open("F:/python_user/"+username+".txt", "r")
+    ref = f.read().split()
+    pw =ref[1]
+    if(password==pw):
+        print('Given credentials are correct ')
+    else:
+        print('username and password does not match')
+        print('do you forgot password')
+        forgotpassword()
+            
+def forgotpassword():
+    usn = input("Please enter your username")
+    f = open("F:/python_user/"+username+".txt", "r")
+    ref = f.read().split()
+    pw =ref[1]
+    print("your password is :"+pw)
+    login()
+            
+def checkloginuser(usern):
+    f = open("F:/python_user/"+usern+".txt", "r")
+    pwd =f.read().split()
+    pwd1 = pwd[1]
+    print(pwd1)
+    login()
+   
+
+def register():
+    a ='''1.email/username should have "@" and followed by "."
+          eg:- sherlock@gmail.com
+                nothing@yahoo.in
+          2.there should not be any "." immediate next to "@"
+          eg:- my@.in and @gmail.com
+          
+          3.it should not start with special characters and numbers
+          ----------------------------------------------------------'''
+          
+    print(a)
+    username = input('please enter username :')
+    if checkuser(username):
+        password = input('please enter password :') 
+        if(checkpassword(password)):
+            f = open("F:/python_user/"+username+".txt", "w")
+            f.write(username+" "+password)
+            f.close()
+            print("you have Register successfully!!!")
+            print("Run Application Again and Choose Login option")
+        else:
+             print("please run application again!!! set correct username and password ")
+            
+    
+def checkpassword(passwd):      
+    SpecialSym =['$', '@', '#', '%']
+    val = True
+      
+    if len(passwd) < 5:
+        print('length should be at least 5')
+        val = False
+          
+    if len(passwd) > 16:
+        print('length should be not be greater than 16')
+        val = False
+        
+          
+    if not any(char.isdigit() for char in passwd):
+        print('Password should have at least one digit')
+        val = False
+          
+    if not any(char.isupper() for char in passwd):
+        print('Password should have at least one uppercase letter')
+        val = False
+          
+    if not any(char.islower() for char in passwd):
+        print('Password should have at least one lowercase letter')
+        val = False
+          
+    if not any(char in SpecialSym for char in passwd):
+        print('Password should have at least one of the symbols $@#')
+        val = False
+    if val:
+        return val
+
+          
+print('To login type 1')
+print('To Register type 2')
+oa = int(input())
+if(oa==1):
+    login()
+elif oa==2:
+    register()
+
+else:
+    print('Sorry! cant access please enter correct option')
